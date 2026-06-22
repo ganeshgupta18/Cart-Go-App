@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "author": "Shivansh Vasu",
   "description": "Full-Stack MERN E-Commerce App",
+  "main": "index.js",
   "scripts": {
     "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "postinstall": "cd backend && npm install && cd ../frontend && npm install",
     "build": "cd frontend && npm install && npm run build",
-    "start": "cd backend && npm start",
+    "start": "node index.js",
     "dev": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
     "start:backend": "npm --prefix backend run dev",
     "start:frontend": "npm --prefix frontend run dev",
