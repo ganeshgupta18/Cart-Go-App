@@ -47,6 +47,10 @@ app.get('/health', (req, res) => {
   });
 });
 
+app.get(['/favicon.ico', '/favicon.png'], (req, res) => {
+  res.status(204).end();
+});
+
 // Database connection middleware (lazy connection)
 app.use(async (req, res, next) => {
   try {
