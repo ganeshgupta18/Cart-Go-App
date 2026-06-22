@@ -1,11 +1,6 @@
 {
   "buildCommand": "cd frontend && npm install && npm run build",
-  "installCommand": "npm install && npm --prefix frontend install",
+  "installCommand": "npm --prefix frontend install",
   "outputDirectory": "frontend/build",
-  "framework": "create-react-app",
-  "public": false,
-  "env": {
-    "NODE_ENV": "production",
-    "REACT_APP_API_BASE_URL": "https://<YOUR_RENDER_BACKEND_URL>"
-  }
+  "framework": "create-react-app"
 }
