@@ -54,23 +54,49 @@ npm run dev
 
 ---
 
-## ☁️ 1-Click Deployment (Render Free-Tier Optimized)
+## ☁️ Production Deployment — Frontend on Vercel, Backend on Render
 
-The server codebase features a seamless fallback mechanic leveraging Node `process.env.NODE_ENV === "production"`. When deployed to Render as a singular instance, the Express backend hosts and correctly resolves static routes to `/frontend/build` rendering the whole platform completely free on 1 Node server.
+This project is now ready to host the React frontend on Vercel and the Express backend separately on Render.
 
-1. Publish this repo onto **GitHub**.
-2. Go to [Render Dashboard](https://dashboard.render.com).
-3. Connect Repo -> Create a **Web Service**.
-4. Configure Build Command:
-   `npm run render-build` 
-   *(This cleanly installs API + UI node_modules then generates `react-scripts build`)*
-5. Configure Start Command:
-   `npm start`
-6. Open **Advanced > Environment Variables** and map your `.env` fields heavily defining `NODE_ENV = production`.
-7. Hit **Deploy**. The robust path resolving inside `/backend/server.js` hosts it fluidly!
+### 1️⃣ Deploy backend to Render
+1. Publish this repo to **GitHub**.
+2. Open [Render Dashboard](https://dashboard.render.com) and connect the repo.
+3. Create a new **Web Service**.
+4. Set the **Root Directory** to `backend`.
+5. Use these settings:
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+   - Environment Variables:
+     - `NODE_ENV=production`
+     - `MONGO_URI=your_mongo_uri`
+     - `JWT_SECRET=your_jwt_secret`
+     - `RAZORPAY_KEY_ID=your_key_id`
+     - `RAZORPAY_KEY_SECRET=your_key_secret`
+     - `CLOUDINARY_CLOUD_NAME=your_cloud_name`
+     - `CLOUDINARY_API_KEY=your_api_key`
+     - `CLOUDINARY_API_SECRET=your_api_secret`
+     - `FRONTEND_URL=https://<your-vercel-domain>`
+6. Deploy the Render service. Copy the generated backend URL like `https://your-backend.onrender.com`.
+
+### 2️⃣ Deploy frontend to Vercel
+1. In Vercel, import the same GitHub repo.
+2. When prompted, choose **Other** or allow Vercel to detect the frontend by `vercel.json`.
+3. Use these settings if manual configuration is required:
+   - Root Directory: the repo root
+   - Build Command: `cd frontend && npm install && npm run build`
+   - Output Directory: `frontend/build`
+   - Install Command: `npm install && npm --prefix frontend install`
+4. Add Environment Variable:
+   - `REACT_APP_API_BASE_URL=https://your-backend.onrender.com`
+5. Deploy the Vercel project.
+
+### 3️⃣ Important Notes
+- The frontend sends API requests to `/api/...` in code, and the global fetch wrapper rewrites them to the Render backend URL.
+- Make sure `REACT_APP_API_BASE_URL` matches your deployed Render backend URL.
+- Set `FRONTEND_URL` on Render to the Vercel app URL so backend CORS allows traffic.
 
 ---
 
-## 📄 Postman Documentations
-This repository includes a fully-scaffolded API testing toolkit: **`ShopNest_Postman_Collection.json`**. 
-Simply Import this file directly into the local Postman IDE. It features variables like `{{token}}` properly mapped to effortlessly check protected admin/user/order payloads. Happy coding!
+## 📄 Postman Documentation
+This repository includes a fully-scaffolded API testing toolkit: **`ShopNest_Postman_Collection.json`**.
+Simply import this file directly into the Postman app. It includes variables like `{{token}}` to test protected admin/user/order endpoints easily.

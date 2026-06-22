@@ -6,7 +6,6 @@
   "main": "index.js",
   "scripts": {
     "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
-    "postinstall": "cd backend && npm install && cd ../frontend && npm install",
     "build": "cd frontend && npm install && npm run build",
     "start": "node index.js",
     "dev": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
