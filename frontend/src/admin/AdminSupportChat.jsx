@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 const AdminSupportChat = ({ user }) => {
   const [conversations, setConversations] = useState([]);
@@ -12,7 +12,7 @@ const AdminSupportChat = ({ user }) => {
   
   const messagesEndRef = useRef(null);
 
-  const fetchConversations = async (showLoading = false) => {
+  const fetchConversations = useCallback(async (showLoading = false) => {
     if (!user) return;
     if (showLoading) setLoadingConvs(true);
     try {
@@ -28,9 +28,9 @@ const AdminSupportChat = ({ user }) => {
     } finally {
       if (showLoading) setLoadingConvs(false);
     }
-  };
+  }, [user]);
 
-  const fetchMessages = async (userId, showLoading = false) => {
+  const fetchMessages = useCallback(async (userId, showLoading = false) => {
     if (!user || !userId) return;
     if (showLoading) setLoadingMsgs(true);
     try {
@@ -46,7 +46,7 @@ const AdminSupportChat = ({ user }) => {
     } finally {
       if (showLoading) setLoadingMsgs(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchConversations(true);
@@ -56,7 +56,7 @@ const AdminSupportChat = ({ user }) => {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [user]);
+  }, [fetchConversations]);
 
   // Handle active messages polling for selected user
   useEffect(() => {
@@ -72,7 +72,7 @@ const AdminSupportChat = ({ user }) => {
     }, 2500);
 
     return () => clearInterval(msgInterval);
-  }, [selectedUserId]);
+  }, [selectedUserId, fetchMessages]);
 
   // Scroll to bottom on new messages
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
 const LiveChatSupport = () => {
@@ -9,7 +9,7 @@ const LiveChatSupport = () => {
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef(null);
 
-  const fetchMessages = async (showLoading = false) => {
+  const fetchMessages = useCallback(async (showLoading = false) => {
     if (!user) return;
     if (showLoading) setLoading(true);
     try {
@@ -25,7 +25,7 @@ const LiveChatSupport = () => {
     } finally {
       if (showLoading) setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     // Initial fetch
@@ -37,7 +37,7 @@ const LiveChatSupport = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [user]);
+  }, [fetchMessages]);
 
   // Auto-scroll to bottom whenever messages list changes
   useEffect(() => {

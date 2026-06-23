@@ -3,6 +3,8 @@ import { AuthContext } from '../context/AuthContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useModal } from '../context/ModalContext';
 
+const predefinedCategories = ['Electronics', 'Furniture', 'Clothing', 'Mobiles', 'Fashion', 'Beauty', 'Home', 'Appliances', 'Toys', 'Food', 'Auto', 'Sports', 'Books'];
+
 const EditProduct = ({ productId, onSuccess }) => {
   const { id: routeId } = useParams();
   const id = productId || routeId;
@@ -14,7 +16,6 @@ const EditProduct = ({ productId, onSuccess }) => {
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [customCategory, setCustomCategory] = useState('');
-  const predefinedCategories = ['Electronics', 'Furniture', 'Clothing', 'Mobiles', 'Fashion', 'Beauty', 'Home', 'Appliances', 'Toys', 'Food', 'Auto', 'Sports', 'Books'];
 
   useEffect(() => {
     const fetchProduct = async () => {

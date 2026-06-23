@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useCallback } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { useModal } from '../context/ModalContext';
@@ -13,15 +13,8 @@ const AdminPromos = () => {
   const [formData, setFormData] = useState({ code: '', discountPercentage: '', description: '' });
   const [submitting, setSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (!user || user.role !== 'admin') {
-      navigate('/');
-      return;
-    }
-    fetchPromos();
-  }, [user, navigate]);
-
-  const fetchPromos = async () => {
+  const fetchPromos = useCallback(async () => {
+    if (!user) return;
     try {
       const res = await fetch('/api/promos/all', {
         headers: { Authorization: `Bearer ${user.token}` }
@@ -35,7 +28,15 @@ const AdminPromos = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (!user || user.role !== 'admin') {
+      navigate('/');
+      return;
+    }
+    fetchPromos();
+  }, [fetchPromos, navigate, user]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
