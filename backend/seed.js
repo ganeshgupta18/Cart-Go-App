@@ -7,10 +7,9 @@ const connectDB = require('./config/db');
 
 dotenv.config();
 
-connectDB();
-
 const importData = async () => {
   try {
+    await connectDB();
     await User.deleteMany();
     await Product.deleteMany();
 
