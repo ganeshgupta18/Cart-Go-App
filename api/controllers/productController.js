@@ -29,15 +29,15 @@ const createProduct = async (req, res) => {
     let imageUrl = '';
     if (req.file) {
       if (process.env.CLOUDINARY_CLOUD_NAME === 'dummy' || !process.env.CLOUDINARY_CLOUD_NAME) {
-        // Fallback for sandboxed developer mode with dummy credentials
-        imageUrl = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600';
+        // Serve locally in development
+        imageUrl = `/api/uploads/${req.file.filename}`;
       } else {
         try {
           const result = await cloudinary.uploader.upload(req.file.path);
           imageUrl = result.secure_url;
         } catch (uploadError) {
-          console.warn('Cloudinary upload failed, falling back to mock image:', uploadError.message);
-          imageUrl = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600';
+          console.warn('Cloudinary upload failed, falling back to local file path:', uploadError.message);
+          imageUrl = `/api/uploads/${req.file.filename}`;
         }
       }
     }
@@ -65,15 +65,14 @@ const updateProduct = async (req, res) => {
 
       if (req.file) {
         if (process.env.CLOUDINARY_CLOUD_NAME === 'dummy' || !process.env.CLOUDINARY_CLOUD_NAME) {
-          // Fallback for sandboxed developer mode with dummy credentials
-          product.imageUrl = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600';
+          product.imageUrl = `/api/uploads/${req.file.filename}`;
         } else {
           try {
             const result = await cloudinary.uploader.upload(req.file.path);
             product.imageUrl = result.secure_url;
           } catch (uploadError) {
-            console.warn('Cloudinary upload failed, falling back to mock image:', uploadError.message);
-            product.imageUrl = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600';
+            console.warn('Cloudinary upload failed, falling back to local file path:', uploadError.message);
+            product.imageUrl = `/api/uploads/${req.file.filename}`;
           }
         }
       }

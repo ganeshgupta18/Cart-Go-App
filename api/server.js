@@ -71,6 +71,8 @@ app.use(async (req, res, next) => {
 
 // Middleware
 app.use(express.json());
+const path = require('path');
+app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
@@ -85,7 +87,7 @@ app.use('/api/chat', require('./routes/chatRoutes'));
 
 // Test Route
 app.get('/', (req, res) => {
-res.send('CartGo API is running...');
+  res.send('CartGo API is running...');
 });
 
 // Export for Vercel
