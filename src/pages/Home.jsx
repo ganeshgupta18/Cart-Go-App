@@ -19,57 +19,9 @@ const categories = [
   { name: 'Furniture', path: '/shop?category=Furniture', icon: (color) => <svg viewBox="0 0 24 24" width="20" height="20" stroke={color} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10V6a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v4a3 3 0 0 0-3 3v4h18v-4a3 3 0 0 0-3-3zM4 17h16M7 17v3M17 17v3"></path></svg> }
 ];
 
-const slides = [
-  {
-    tag: 'WELCOME OFFER',
-    title: 'Flat 30% Off On Your First Order',
-    subtitle: 'Verify your email and use coupon code WELCOME30 at checkout!',
-    btnText: 'Shop Now',
-    path: '/shop',
-    bg: 'linear-gradient(135deg, #1e1b4b 0%, #311042 100%)',
-    img: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=800&h=320',
-    tabletImg: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=500&h=300',
-    mobileImg: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=200&h=200'
-  },
-  {
-    tag: 'ELECTRONICS SUPER SALE',
-    title: 'Up To 40% Off Premium Tech',
-    subtitle: 'Elevate your audio shelf with top-tier active noise-cancelling headphones.',
-    btnText: 'Explore Tech',
-    path: '/shop?category=Electronics',
-    bg: 'linear-gradient(135deg, #064e3b 0%, #022c22 100%)',
-    img: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=800&h=320',
-    tabletImg: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=500&h=300',
-    mobileImg: 'https://images.unsplash.com/photo-1546435770-a3e426bf472b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=200&h=200'
-  },
-  {
-    tag: 'MODERN COMFORT',
-    title: 'Luxury Furniture Up To 25% Off',
-    subtitle: 'Upgrade your living space with our minimalist chairs and design classics.',
-    btnText: 'Browse Furniture',
-    path: '/shop?category=Furniture',
-    bg: 'linear-gradient(135deg, #7c2d12 0%, #431407 100%)',
-    img: 'https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=800&h=320',
-    tabletImg: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=500&h=300',
-    mobileImg: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=200&h=200'
-  },
-  {
-    tag: 'STYLE & APPAREL',
-    title: 'Fresh Fashion Trends Unleashed',
-    subtitle: 'Step into comfort with free shipping and zero-cost return window.',
-    btnText: 'Shop Apparel',
-    path: '/shop?category=Clothing',
-    bg: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-    img: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=800&h=320',
-    tabletImg: 'https://images.unsplash.com/photo-1491553895911-0055eca6402d?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=500&h=300',
-    mobileImg: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&q=80&w=200&h=200'
-  }
-];
-
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentSlide, setCurrentSlide] = useState(0);
   const [appReviews, setAppReviews] = useState([]);
   const { showAlert } = useModal();
   const navigate = useNavigate();
@@ -104,21 +56,6 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0, margin: '-40px -20px' }}>
       
@@ -136,41 +73,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Deals Slider */}
-      <div className="deals-slider-section">
-        <div className="deals-slider">
-          <div className="deals-slides-container" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-            {slides.map((slide, idx) => (
-              <div key={idx} className="deal-slide" style={{ background: slide.bg }}>
-                <div className="deal-slide-content">
-                  <span className="deal-tag">{slide.tag}</span>
-                  <h2 className="deal-title">{slide.title}</h2>
-                  <p className="deal-subtitle">{slide.subtitle}</p>
-                  <button className="deal-btn" onClick={() => navigate(slide.path)}>{slide.btnText}</button>
-                </div>
-                <div className="deal-slide-image">
-                  <picture>
-                    <source media="(max-width: 576px)" srcSet={slide.mobileImg} />
-                    <source media="(max-width: 992px)" srcSet={slide.tabletImg} />
-                    <img src={slide.img} alt={slide.title} />
-                  </picture>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className="slider-arrow left" onClick={prevSlide}>&larr;</button>
-          <button className="slider-arrow right" onClick={nextSlide}>&rarr;</button>
-          <div className="slider-dots">
-            {slides.map((_, idx) => (
-              <div 
-                key={idx} 
-                className={`slider-dot ${idx === currentSlide ? 'active' : ''}`}
-                onClick={() => setCurrentSlide(idx)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+
 
       {/* 1. Hero Section */}
       <section style={{ ...sectionStyle, background: 'radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.15), transparent 50%), #09090b' }}>
