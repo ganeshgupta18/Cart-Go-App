@@ -1,9 +1,31 @@
 {
-  "buildCommand": "cd frontend && npm install && NODE_NO_WARNINGS=1 npm run build",
-  "installCommand": "NODE_NO_WARNINGS=1 npm --prefix frontend install",
-  "outputDirectory": "frontend/build",
-  "framework": "create-react-app",
-  "env": {
-    "NODE_NO_WARNINGS": "1"
-  }
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/server.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "api/server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1",
+      "check": true
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
